@@ -27,19 +27,21 @@ angular.module('AutoFontSize', [])
 
                             // deal with line-height and images
                             adjustLineHeightAndInlineImages();
-
-                            if (fontTooBig() && options.shrink) {
-                                while (fontTooBig() && i < 100 && fontSizeI() >= options.minSize) {
-                                    setFontSize(fontSizeI() - 1);
-                                    i = i + 1;
+                            
+                            if (inner.height() > 0 && inner.width() > 0) {
+                                if (fontTooBig() && options.shrink) {
+                                    while (fontTooBig() && i < 100 && fontSizeI() >= options.minSize) {
+                                        setFontSize(fontSizeI() - 1);
+                                        i = i + 1;
+                                    }
+                                } else if (fontTooSmall() && options.grow) {
+                                    while (fontTooSmall() && i < 100) {
+                                        setFontSize(fontSizeI() + 1);
+                                        i = i + 1;
+                                    }
+                                } else {
+                                    return;
                                 }
-                            } else if (fontTooSmall() && options.grow) {
-                                while (fontTooSmall() && i < 100) {
-                                    setFontSize(fontSizeI() + 1);
-                                    i = i + 1;
-                                }
-                            } else {
-                                return;
                             }
                             
                             scope.$emit('auto-font-size:resized', {
